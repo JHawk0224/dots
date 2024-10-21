@@ -154,14 +154,7 @@ class GameViewModel: ObservableObject {
                         generatePowerup()
                     }
                     
-                    if score == 10 && !achievementViewModel.isUnlocked(achievementName: .score10Points) {
-                        achievementViewModel.unlock(achievementName: .score10Points)
-                        showBanner(achievementName: .score10Points)
-                    }
-                    if score == 20 && !achievementViewModel.isUnlocked(achievementName: .score20Points) {
-                        achievementViewModel.unlock(achievementName: .score20Points)
-                        showBanner(achievementName: .score20Points)
-                    }
+                    checkAchievements()
                     
                     addEnemy()
                     if squaresCollected % 5 == 0 {
@@ -174,6 +167,7 @@ class GameViewModel: ObservableObject {
                 if player.testCollision(with: enemy) {
                     if pacmanMode {
                         dotsEaten += 1
+                        checkAchievements()
                         enemies.remove(at: index)
                     } else {
                         finishGame()
@@ -201,6 +195,17 @@ class GameViewModel: ObservableObject {
                 freezeMode = false
                 powerupModeTimeRemaining = 0
             }
+        }
+    }
+    
+    private func checkAchievements() {
+        if score == 10 && !achievementViewModel.isUnlocked(achievementName: .score10Points) {
+            achievementViewModel.unlock(achievementName: .score10Points)
+            showBanner(achievementName: .score10Points)
+        }
+        if score == 20 && !achievementViewModel.isUnlocked(achievementName: .score20Points) {
+            achievementViewModel.unlock(achievementName: .score20Points)
+            showBanner(achievementName: .score20Points)
         }
     }
     
